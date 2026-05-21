@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>エラー | DocMate</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Noto Sans JP", sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 100px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 42px;
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+            text-align: center;
+        }
+
+        .icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: #fef2f2;
+            color: #dc2626;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            font-weight: 700;
+        }
+
+        .badge {
+            display: inline-block;
+            margin-bottom: 16px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: #fee2e2;
+            color: #b91c1c;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        h1 {
+            margin: 0 0 14px;
+            font-size: 28px;
+            color: #111827;
+        }
+
+        .message {
+            margin: 0 auto 30px;
+            max-width: 540px;
+            color: #4b5563;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .error-box {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 28px;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="card">
+
+        <!-- エラーアイコン -->
+        <div class="icon">!</div>
+
+        <!-- エラーページ用のバッジ -->
+        <div class="badge">DocMate Error</div>
+
+        <h1>処理中に問題が発生しました</h1>
+
+        <p class="message">
+            指定された書類が存在しない、またはアクセス権限がない可能性があります。<br>
+            必要に応じて、書類一覧画面からもう一度操作してください。
+        </p>
+
+        <!-- Controller / GlobalExceptionHandler から渡されたエラーメッセージを表示する -->
+        <div class="error-box" th:if="${errorMessage}">
+            <span th:text="${errorMessage}">
+                エラーが発生しました。
+            </span>
+        </div>
+
+        <!-- エラー発生後に戻るための操作ボタン -->
+        <div class="actions">
+            <a th:href="@{/documents}" class="btn btn-primary">
+                書類一覧へ戻る
+            </a>
+
+            <a th:href="@{/mypage}" class="btn btn-secondary">
+                マイページへ戻る
+            </a>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

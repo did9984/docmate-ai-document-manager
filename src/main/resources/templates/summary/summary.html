@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>AI要約結果 | DocMate</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Noto Sans JP", sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 32px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #e0f2fe;
+            color: #0369a1;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            margin: 0 0 14px;
+            font-size: 28px;
+            color: #111827;
+        }
+
+        .document-info {
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .document-info div {
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #4b5563;
+        }
+
+        .summary-box {
+            white-space: pre-wrap;
+            line-height: 1.8;
+            padding: 22px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            font-size: 15px;
+            color: #1f2937;
+        }
+
+        .actions {
+            margin-top: 28px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 11px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="card">
+
+        <div class="badge">AI要約 MVP</div>
+
+        <h1>AI要約結果</h1>
+
+        <div class="document-info">
+            <div>
+                書類名：
+                <strong th:text="${document.originalFileName}">sample.txt</strong>
+            </div>
+
+            <div>
+                作成日時：
+                <span th:text="${#temporals.format(summary.createdAt, 'yyyy/MM/dd HH:mm')}">
+                    2026/05/19 20:00
+                </span>
+            </div>
+        </div>
+
+        <div class="summary-box" th:text="${summary.summaryText}">
+            ここにAI要約結果が表示されます。
+        </div>
+
+        <div class="actions">
+            <a class="btn btn-primary" th:href="@{/documents}">書類一覧に戻る</a>
+            <a class="btn btn-secondary" th:href="@{/mypage}">マイページへ</a>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>マイページ | DocMate</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Noto Sans JP", sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        /* ヘッダーエリア */
+        .header {
+            background: #ffffff;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        .logout-form {
+            margin: 0;
+        }
+
+        .logout-btn {
+            background: #eef2f7;
+            color: #374151;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: #e5e7eb;
+        }
+
+        /* メインコンテンツ領域 */
+        .container {
+            max-width: 1000px;
+            margin: 70px auto;
+            padding: 0 20px;
+        }
+
+        .main-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 36px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #e0f2fe;
+            color: #0369a1;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            font-size: 32px;
+            color: #111827;
+        }
+
+        .description {
+            margin: 0 0 28px;
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        .welcome {
+            background: #f8fbff;
+            border: 1px solid #bfdbfe;
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 28px;
+            color: #1f2937;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* 機能カード表示エリア */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+        }
+
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .menu-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            padding: 24px;
+            border-radius: 16px;
+            min-height: 150px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card-link .menu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.10);
+        }
+
+        .menu-card h3 {
+            margin: 0 0 12px;
+            font-size: 18px;
+            color: #111827;
+        }
+
+        .menu-card p {
+            margin: 0;
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.7;
+        }
+
+        .planned-card {
+            background: #ffffff;
+            border: 1px dashed #cbd5e1;
+            padding: 24px;
+            border-radius: 16px;
+            min-height: 150px;
+            opacity: 0.85;
+        }
+
+        .planned-card h3 {
+            margin: 0 0 12px;
+            font-size: 18px;
+            color: #374151;
+        }
+
+        .planned-card p {
+            margin: 0;
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.7;
+        }
+
+        .status-label {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: #eef2ff;
+            color: #3730a3;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .active-status {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .note {
+            margin-top: 28px;
+            padding: 16px;
+            background: #f9fafb;
+            border-left: 4px solid #2563eb;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 640px) {
+            .header {
+                padding: 18px 24px;
+            }
+
+            .container {
+                margin: 50px auto;
+            }
+
+            .main-card {
+                padding: 28px 22px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ヘッダー -->
+<header class="header">
+    <div class="logo">DocMate</div>
+
+    <!-- ログアウト処理 -->
+    <form th:action="@{/logout}" method="post" class="logout-form">
+        <button class="logout-btn" type="submit">
+            ログアウト
+        </button>
+    </form>
+</header>
+
+<!-- メイン画面 -->
+<div class="container">
+    <div class="main-card">
+
+        <span class="badge">DocMate Career Support</span>
+
+        <h1>マイページ</h1>
+
+        <p class="description">
+            応募書類のアップロード、一覧確認、ダウンロード、削除に加えて、<br>
+            txtファイルを対象にAI要約・AI書類レビュー機能を利用できます。
+        </p>
+
+        <!-- ログイン中ユーザー表示 -->
+        <div class="welcome">
+            👋 <strong th:text="${username}">ユーザー</strong>さん、ようこそ！
+        </div>
+
+        <!-- 機能メニュー -->
+        <div class="card-container">
+
+            <!-- 応募書類アップロード画面へ移動 -->
+            <a th:href="@{/documents/upload}" class="card-link">
+                <div class="menu-card">
+                    <h3>📄 応募書類アップロード</h3>
+                    <p>
+                        履歴書、職務経歴書、ポートフォリオ資料などをアップロードできます。
+                    </p>
+                </div>
+            </a>
+
+            <!-- アップロード済み書類一覧画面へ移動 -->
+            <a th:href="@{/documents}" class="card-link">
+                <div class="menu-card">
+                    <h3>📁 応募書類一覧</h3>
+                    <p>
+                        アップロード済みの書類を確認し、ダウンロードや削除を行えます。
+                    </p>
+                </div>
+            </a>
+
+            <!-- AI要約・AI書類レビュー機能 -->
+            <a th:href="@{/documents}" class="card-link">
+                <div class="menu-card">
+                    <h3>🤖 AI要約・AI書類レビュー</h3>
+                    <p>
+                        txtファイルを対象に、応募書類の要約や改善ポイントを確認できます。
+                        OpenAI API連携は設定で切り替え可能です。
+                    </p>
+                    <span class="status-label active-status">実装済み</span>
+                </div>
+            </a>
+
+            <!-- 今後追加予定のAWS拡張 -->
+            <div class="planned-card">
+                <h3>☁️ AWS拡張</h3>
+                <p>
+                    将来的にS3保存、RDS連携、クラウド環境へのデプロイを検討しています。
+                </p>
+                <span class="status-label">学習・拡張予定</span>
+            </div>
+
+        </div>
+
+        <div class="note">
+            ※ アップロードした書類はログイン中のユーザーごとに管理されます。<br>
+            ※ 他のユーザーの書類にはアクセスできない構成です。<br>
+            ※ MVP段階では、AI要約・AI書類レビュー機能はtxtファイルのみ対応しています。
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>応募書類一覧 | DocMate</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Noto Sans JP", sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 70px auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            margin-bottom: 28px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #e0f2fe;
+            color: #0369a1;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+
+        h1 {
+            margin: 0 0 10px;
+            font-size: 32px;
+            color: #111827;
+        }
+
+        .description {
+            color: #4b5563;
+            line-height: 1.7;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 32px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        .alert {
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .alert-success {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .empty-box {
+            border: 2px dashed #bfdbfe;
+            background: #f8fbff;
+            border-radius: 16px;
+            padding: 42px 24px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #111827;
+        }
+
+        .empty-text {
+            color: #6b7280;
+            line-height: 1.7;
+            margin-bottom: 28px;
+        }
+
+        .button-area {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            min-width: 190px;
+            text-align: center;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #eef2f7;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .document-item {
+            padding: 18px 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            background: #f9fafb;
+            margin-bottom: 14px;
+        }
+
+        .document-name {
+            font-size: 17px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .document-meta {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .note {
+            margin-top: 24px;
+            padding: 16px;
+            background: #f9fafb;
+            border-left: 4px solid #2563eb;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 1.7;
+        }
+
+        .document-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .action-form {
+            margin: 0;
+            display: inline-flex;
+        }
+
+        .download-button,
+        .delete-button,
+        .summary-btn,
+        .review-btn {
+            height: 50px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-sizing: border-box;
+            line-height: 1;
+        }
+
+        .download-button {
+            min-width: 145px;
+            padding: 0 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+        }
+
+        .download-button:hover {
+            background: #1d4ed8;
+        }
+
+        .delete-button {
+            min-width: 74px;
+            padding: 0 20px;
+            background: #dc2626;
+            color: white;
+            border: none;
+        }
+
+        .delete-button:hover {
+            background: #b91c1c;
+        }
+
+        .ai-button-area {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .summary-btn {
+            min-width: 84px;
+            padding: 0 16px;
+            border: none;
+            background: #7c3aed;
+            color: #ffffff;
+        }
+
+        .summary-btn:hover {
+            background: #6d28d9;
+        }
+
+        .review-btn {
+            min-width: 104px;
+            padding: 0 16px;
+            border: none;
+            background: #9333ea;
+            color: #ffffff;
+        }
+
+        .review-btn:hover {
+            background: #7e22ce;
+        }
+
+        .ai-disabled-message {
+            height: 50px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 16px;
+            border-radius: 9px;
+            background: #f3f4f6;
+            color: #6b7280;
+            font-size: 13px;
+            font-weight: 600;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <!-- 成功メッセージ表示エリア -->
+    <div th:if="${successMessage}" class="alert alert-success">
+        <span th:text="${successMessage}">処理が完了しました。</span>
+    </div>
+
+    <!-- エラーメッセージ表示エリア -->
+    <div th:if="${errorMessage}" class="alert alert-error">
+        <span th:text="${errorMessage}">エラーが発生しました。</span>
+    </div>
+
+    <div class="header">
+        <span class="badge">DocMate Career Support</span>
+        <h1>応募書類一覧</h1>
+        <p class="description">
+            履歴書、職務経歴書、ポートフォリオ資料など、転職活動で使用する応募書類を一元管理できます。
+        </p>
+    </div>
+
+    <div class="card">
+
+        <!-- 文書が1件もない場合 -->
+        <div th:if="${#lists.isEmpty(documents)}" class="empty-box">
+            <div class="empty-icon">📄</div>
+
+            <div class="empty-title">
+                まだ応募書類が登録されていません
+            </div>
+
+            <div class="empty-text">
+                まずは履歴書や職務経歴書などの応募書類をアップロードしてください。<br>
+                txtファイルをアップロードすると、AI要約・AI書類レビュー機能を利用できます。
+            </div>
+
+            <div class="button-area">
+                <a th:href="@{/documents/upload}" class="btn btn-primary">
+                    書類をアップロードする
+                </a>
+
+                <a th:href="@{/mypage}" class="btn btn-secondary">
+                    マイページへ戻る
+                </a>
+            </div>
+        </div>
+
+        <!-- 文書が1件以上ある場合 -->
+        <div th:if="${!#lists.isEmpty(documents)}">
+
+            <div th:each="document : ${documents}" class="document-item">
+                <div class="document-name" th:text="${document.originalFileName}">
+                    履歴書.pdf
+                </div>
+
+                <div class="document-meta">
+                    <div>
+                        <span th:text="${document.fileIcon}">📄</span>
+                        <span th:text="${document.fileTypeLabel}">PDF</span>
+                        /
+                        <span th:text="${document.readableFileSize}">12.1 KB</span>
+                    </div>
+
+                    <div style="margin-top: 6px; color: #2563eb; font-weight: 600;">
+                        📅 アップロード日時：
+                        <span th:text="${#temporals.format(document.uploadedAt, 'yyyy/MM/dd HH:mm')}">
+                            2026/04/28 21:30
+                        </span>
+                    </div>
+                </div>
+
+                <div class="document-actions">
+
+                    <!-- 書類IDをもとに、ダウンロードURLへ遷移する -->
+                    <!-- サーバー側でログインユーザー本人の書類かどうかを確認してからダウンロードする -->
+                    <a th:href="@{/documents/{id}/download(id=${document.id})}"
+                       class="download-button">
+                        ダウンロード
+                    </a>
+
+                    <!-- 書類IDをもとに、本人の書類だけを削除する -->
+                    <!-- 削除処理はデータを変更するため、GETではなくPOSTで送信する -->
+                    <form th:action="@{/documents/{id}/delete(id=${document.id})}"
+                          method="post"
+                          class="action-form">
+                        <button type="submit"
+                                class="delete-button"
+                                onclick="return confirm('この書類を削除しますか？');">
+                            削除
+                        </button>
+                    </form>
+
+                    <!-- txtファイルの場合のみAI機能ボタンを表示する -->
+                    <div th:if="${document.textFile}" class="ai-button-area">
+
+                        <form th:action="@{/summaries/documents/{documentId}(documentId=${document.id})}"
+                              method="post"
+                              class="action-form">
+
+                            <!-- CSRF対策用トークン -->
+                            <input type="hidden"
+                                   th:if="${_csrf != null}"
+                                   th:name="${_csrf.parameterName}"
+                                   th:value="${_csrf.token}" />
+
+                            <button type="submit" class="summary-btn">
+                                AI要約
+                            </button>
+                        </form>
+
+                        <form th:action="@{/reviews/documents/{documentId}(documentId=${document.id})}"
+                              method="post"
+                              class="action-form">
+
+                            <!-- CSRF対策用トークン -->
+                            <input type="hidden"
+                                   th:if="${_csrf != null}"
+                                   th:name="${_csrf.parameterName}"
+                                   th:value="${_csrf.token}" />
+
+                            <button type="submit" class="review-btn">
+                                AIレビュー
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- txtファイル以外の場合はAI機能の対象外であることを表示する -->
+                    <div th:if="${!document.textFile}" class="ai-disabled-message">
+                        AI機能は現在txtファイルのみ対応しています
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="button-area" style="margin-top: 28px;">
+                <a th:href="@{/documents/upload}" class="btn btn-primary">
+                    追加でアップロードする
+                </a>
+
+                <a th:href="@{/mypage}" class="btn btn-secondary">
+                    マイページへ戻る
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="note">
+        ※ アップロードした書類はログイン中のユーザーごとに管理されます。<br>
+        ※ MVP段階では、AI要約・AI書類レビュー機能はtxtファイルのみ対応しています。<br>
+        ※ 実際のOpenAI API連携は設定で切り替え可能な構成にしています。
+    </div>
+
+</div>
+</body>
+</html>

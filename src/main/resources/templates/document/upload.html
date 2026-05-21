@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>応募書類アップロード | DocMate</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Noto Sans JP", sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 70px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 40px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #e0f2fe;
+            color: #0369a1;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            font-size: 30px;
+            color: #111827;
+        }
+
+        .description {
+            margin-bottom: 32px;
+            line-height: 1.8;
+            color: #4b5563;
+        }
+
+        .upload-box {
+            border: 2px dashed #93c5fd;
+            border-radius: 16px;
+            background: #f8fbff;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 14px;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .hint {
+            margin-top: 14px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .button-area {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+
+        button, .back-link {
+            flex: 1;
+            text-align: center;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        button {
+            border: none;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .back-link {
+            background: #eef2f7;
+            color: #374151;
+        }
+
+        .back-link:hover {
+            background: #e5e7eb;
+        }
+
+        .note {
+            margin-top: 28px;
+            padding: 16px;
+            background: #f9fafb;
+            border-left: 4px solid #2563eb;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 1.7;
+        }
+
+        .alert {
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .alert-success {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <!-- エラーメッセージ -->
+    <div th:if="${errorMessage}" class="alert alert-error">
+        <span th:text="${errorMessage}">エラーが発生しました。</span>
+    </div>
+
+    <!-- 成功メッセージ -->
+    <div th:if="${successMessage}" class="alert alert-success">
+        <span th:text="${successMessage}">処理が完了しました。</span>
+    </div>
+
+    <div class="card">
+        <span class="badge">DocMate Career Support</span>
+
+        <h1>応募書類アップロード</h1>
+
+        <p class="description">
+            履歴書、職務経歴書、ポートフォリオ資料などの応募書類をアップロードして管理できます。<br>
+            アップロードした書類は一覧画面で確認でき、今後AIによる書類レビュー機能にも利用できるようにします。
+        </p>
+
+        <form th:action="@{/documents/upload}" method="post" enctype="multipart/form-data">
+            <div class="upload-box">
+                <input type="file" name="file">
+
+                <p class="hint">
+                    PDF、Word、画像、テキストファイルなどの応募関連書類を選択してください。
+                </p>
+            </div>
+
+            <div class="button-area">
+                <button type="submit">アップロードする</button>
+                <a th:href="@{/mypage}" class="back-link">マイページへ戻る</a>
+            </div>
+        </form>
+
+        <div class="note">
+            ※ アップロードした書類はログイン中のユーザーごとに管理されます。<br>
+            今後、AIによる書類レビュー機能を追加予定です。
+        </div>
+    </div>
+</div>
+</body>
+</html>
