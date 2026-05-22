@@ -156,8 +156,6 @@ users
 
 ## 画面
 
-## 画面
-
 ### トップページ
 
 ![トップページ](docs/images/home.png)
